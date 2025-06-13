@@ -24,6 +24,7 @@ body{
   justify-content: space-between;
   overflow: hidden;
   padding: 0 20px;
+  box-shadow: 0 2px 5px 1px hsla(203, 52%, 5%, 0.5);
 }
 
 .header__logo{
@@ -41,7 +42,11 @@ body{
   align-items: center;
   gap: 10px;
 }
-
+.nav__list{
+  display: flex;
+  gap: 10px;
+  list-style: none;
+}
 .nav{    
   align-items: end;
   padding-bottom: 20px;
