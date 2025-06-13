@@ -1,7 +1,7 @@
 import './style.css';
-import * as homeController from './Views/Home/homeController.js'
-import * as categoriaController from './Views/Categorias/categoriaController.js'
-import * as productoController from './Views/Productos/productoController.js'
+import homeController from './Views/Home/homeController.js'
+import categoriaController from './Views/Categorias/categoriaController.js'
+import productoController from './Views/Productos/productoController.js'
 
 const vistas = [
   {
@@ -28,9 +28,9 @@ const enrutador = async (hash) => {
   const main = document.querySelector('main');
   const section = await fetch(vista.path);
   main.innerHTML = await section.text();
-  
-  if (typeof vista.controlador.init === 'function') {
-    vista.controlador.init();
+
+  if (typeof vista.controlador === 'function') {
+    vista.controlador();
   }
 }
 

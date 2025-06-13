@@ -1,4 +1,4 @@
-export const init = () => {
+export default   () => {
   const contenedor = document.querySelector('.content');
   const parrafo = document.createElement('p');
   parrafo.textContent = "Este es un texto cargado desde el controlador de CATEGORIA"
