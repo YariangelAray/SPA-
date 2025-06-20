@@ -1,6 +1,8 @@
 import './style.css';
 import homeController from './Views/Home/homeController.js'
 import categoriaController from './Views/Categorias/categoriaController.js'
+import formularioController from './Views/Categorias/formularioController.js'
+
 import productoController from './Views/Productos/productoController.js'
 
 const vistas = [
@@ -18,6 +20,11 @@ const vistas = [
     nombre: "Productos",
     path: `./src/Views/Productos/index.html`,
     controlador: productoController
+  },
+  {
+    nombre: "NuevaCategoria",
+    path: `./src/Views/Categorias/formulario.html`,
+    controlador: formularioController
   }
 ]
 
@@ -28,10 +35,10 @@ const enrutador = async (hash) => {
   const main = document.querySelector('main');
   const section = await fetch(vista.path);
   main.innerHTML = await section.text();
+  vista.controlador();
 
-  if (typeof vista.controlador === 'function') {
-    vista.controlador();
-  }
+  // if (typeof vista.controlador === 'function') {
+  // }
 }
 
 window.addEventListener('hashchange', async (e) => {
