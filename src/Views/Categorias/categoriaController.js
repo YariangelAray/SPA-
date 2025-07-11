@@ -1,9 +1,10 @@
+import * as api from "../../Helpers/api";
+
+
 export default async () => {
   const contenedor = document.querySelector('.content');
-  
 
-  const data = await fetch("http://localhost:3000/api/categorias");
-  const categorias = await data.json();
+  const categorias = await api.get('categorias');
 
   const encabezadosCategorias = ["CATEGORIA", "DESCRIPCION", "EDITAR", "ELIMINAR"];
   const datosCategorias = [];

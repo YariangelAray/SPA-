@@ -25,6 +25,7 @@ const vistas = [
     nombre: "NuevaCategoria",
     path: `./src/Views/Categorias/formulario.html`,
     controlador: formularioController
+    
   }
 ]
 
@@ -36,9 +37,6 @@ const enrutador = async (hash) => {
   const section = await fetch(vista.path);
   main.innerHTML = await section.text();
   vista.controlador();
-
-  // if (typeof vista.controlador === 'function') {
-  // }
 }
 
 window.addEventListener('hashchange', async (e) => {

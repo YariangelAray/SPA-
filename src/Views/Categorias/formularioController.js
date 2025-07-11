@@ -1,3 +1,5 @@
+import * as api from "../../Helpers/api";
+import { manejarErrores } from "../../Helpers/manejoErrores";
 import * as validacion from "../../Helpers/validaciones";
 
 export default () => {
@@ -13,11 +15,18 @@ export default () => {
   descripcion.addEventListener('keydown', (e) => { validacion.validarCampo(e);  validacion.validarLimite(e, 100)});
 
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (validacion.validarCampos(e)) {
-      console.log(validacion.datos);
-      
+      const respuesta = await api.post('categorias', validacion.datos)
+
+      if (!respuesta.ok) {
+        manejarErrores(respuesta);
+        return;
+      }
+
+      alert('Categoria creada exitosamente.')
+      window.location.href='#Categorias'
     }
   })
 }
