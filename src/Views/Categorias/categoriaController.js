@@ -1,20 +1,19 @@
 import * as api from "../../Helpers/api";
 
-
 export default async () => {
   const contenedor = document.querySelector('.content');
-
+  
   const categorias = await api.get('categorias');
 
-  const encabezadosCategorias = ["CATEGORIA", "DESCRIPCION", "EDITAR", "ELIMINAR"];
+  const encabezadosCategorias = ["ID","CATEGORIA", "DESCRIPCION", "EDITAR", "ELIMINAR"];
   const datosCategorias = [];
   categorias.data.forEach(categoria => {
-    const datos = [categoria.nombre, categoria.descripcion];
+    const datos = { datos: [categoria.id, categoria.nombre, categoria.descripcion], id: categoria.id}
     datosCategorias.push(datos);
   });
 
   const tabla = crearTabla(encabezadosCategorias, datosCategorias);
-
+  
   contenedor.append(tabla);
 
   // const botonNuevo = document.querySelector('#nuevaCategoria');
@@ -56,13 +55,13 @@ const crearTabla = (encabezados, datos) => {
   tablaBody.classList.add('tabla__cuerpo');  
 
   // Recorremos la lista de los datos y creamos una fila por cada dato
-  datos.forEach((listaDatos) => {
+  datos.forEach(({datos, id}) => {
 
     const fila = document.createElement('tr');
     fila.classList.add('tabla__fila');
 
     // Recorremos las celdas y las agregamos a la fila
-    listaDatos.forEach((dato) => {
+    datos.forEach((dato) => {
       const celda = document.createElement('td');
       celda.classList.add('tabla__celda');
       celda.textContent = dato;
@@ -77,11 +76,12 @@ const crearTabla = (encabezados, datos) => {
     celdaEliminar.classList.add('tabla__celda');
 
     const celdaEditar = document.createElement('td');
-    const editarBoton = document.createElement('button');
+    const editarBoton = document.createElement('a');
     editarBoton.classList.add('boton');
     editarBoton.textContent = "Editar";
     celdaEditar.append(editarBoton);
     celdaEditar.classList.add('tabla__celda');
+    editarBoton.href = `editar/${id}`;
 
     fila.append(celdaEditar, celdaEliminar);
 
