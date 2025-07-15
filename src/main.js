@@ -1,9 +1,4 @@
 import './style.css';
-import homeController from './Views/Home/homeController.js'
-import categoriaController from './Views/Categorias/categoriaController.js'
-import formularioController from './Views/Categorias/formularioController.js'
-
-import productoController from './Views/Productos/productoController.js'
 import { router } from './Router/router.js';
 
 // const vistas = [

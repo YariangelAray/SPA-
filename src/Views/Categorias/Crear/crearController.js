@@ -1,6 +1,6 @@
-import * as api from "../../Helpers/api";
-import { manejarErrores } from "../../Helpers/manejoErrores";
-import * as validacion from "../../Helpers/validaciones";
+import * as api from "../../../Helpers/api";
+import { manejarErrores } from "../../../Helpers/manejoErrores";
+import * as validacion from "../../../Helpers/validaciones";
 
 export default () => {
   const form = document.querySelector('#form');

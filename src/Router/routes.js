@@ -1,35 +1,42 @@
 import homeController from '../Views/Home/homeController.js'
+// categorias
 import categoriaController from '../Views/Categorias/categoriaController.js'
-import formularioController from '../Views/Categorias/formularioController.js'
+import categoriaCrearController from '../Views/Categorias/Crear/crearController.js'
+// productos
 import productoController from '../Views/Productos/productoController.js'
 
-export const routes = [
-  {
-    nombre: "Home",
+export const routes = {
+  // Ruta simple
+  Home:{    
     path: "Home/index.html",
     controlador: homeController,
+    private: false
   },
-  {
-    nombre: "Categorias",
-    path: `Categorias/index.html`,
-    controlador: categoriaController,
-    rutas: {
-      crear: {
-        nombre
-      },
-      editar: {},
-      eliminar: {}
-    }
+  // Grupo de rutas
+  Categorias: {
+    "/":{
+      path: `Categorias/index.html`,
+      controlador: categoriaController,
+      private: false
+    }    ,
+    Crear: {    
+      path: `Categorias/Crear/index.html`,
+      controlador: categoriaCrearController,
+      private: false
+    },              
+    Editar: {},
+    Eliminar: {}    
   },
-  {
-    nombre: "Productos",
+  Productos:{    
     path: `Productos/index.html`,
     controlador: productoController
   },
-  {
-    nombre: "NuevaCategoria",
-    path: `Categorias/formulario.html`,
-    controlador: formularioController
-    
-  }
-]
+  Login: {
+    path: `Auth/Login/index.html`,
+    controlador: () => {}
+  },
+  Signup: {
+    path: `Auth/Signup/index.html`,
+    controlador: () => {}
+  },
+}
