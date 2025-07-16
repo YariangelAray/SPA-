@@ -2,7 +2,8 @@ import { routes } from "./routes";
 
 export const router = async (elemento) => {
   const hash = location.hash.slice(2);
-  let segmentos = hash.split("/");  
+  // if (hash.charAt(-1) == "/") hash = 
+  let segmentos = (hash.split("/")).filter(seg => seg);  
   console.log(hash, segmentos)
 
   const vista = recorrerRutas(routes, segmentos);
@@ -24,13 +25,15 @@ const recorrerRutas = (routes, segmentos) => {
   let rutaActual = routes;
   let rutaEncontrada = false;
 
-  segmentos.forEach(endpoint => {
-    // endpoint = endpoint.toLowerCase();
+  if (segmentos[0] == "" && segmentos.length == 1) window.location.href = "#/Home";
 
-    if (endpoint == "") window.location.href = "#/Home";        
-    
-    if (rutaActual[endpoint]) {
-      rutaActual = rutaActual[endpoint];
+  segmentos.forEach(segmento => {
+    // segmento = segmento.toLowerCase();
+
+    // if (segmento == "") return;
+
+    if (rutaActual[segmento]) {
+      rutaActual = rutaActual[segmento];
       rutaEncontrada = true;
     } else rutaEncontrada = false;
 
@@ -49,7 +52,7 @@ const recorrerRutas = (routes, segmentos) => {
 
     // for (const key in rutaActual) {
     //   if (typeof rutaActual[key] == 'object') {
-    //     if(!rutaActual.hasOwnProperty(endpoint)) rutaActual = rutaActual["/"]
+    //     if(!rutaActual.hasOwnProperty(segmento)) rutaActual = rutaActual["/"]
     //   }
     // }
 

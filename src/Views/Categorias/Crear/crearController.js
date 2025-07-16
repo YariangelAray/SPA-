@@ -14,19 +14,28 @@ export default () => {
   descripcion.addEventListener('blur', validacion.validarCampo);
   descripcion.addEventListener('keydown', (e) => { validacion.validarCampo(e);  validacion.validarLimite(e, 100)});
 
+  window.addEventListener('beforeunload', (e) => {
+    if (nombre.value != "" || descripcion.value != "") {
+      e.preventDefault();
+      // return "Hay datos que no se han guardado, desea continuar?"
+    }
+  })
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (validacion.validarCampos(e)) {
-      const respuesta = await api.post('categorias', validacion.datos)
+      // const respuesta = await api.post('categorias', validacion.datos)
 
-      if (!respuesta.ok) {
-        manejarErrores(respuesta);
-        return;
-      }
+      // if (!respuesta.ok) {
+      //   manejarErrores(respuesta);
+      //   return;
+      // }
+
+      console.log(validacion.datos);
+      
 
       alert('Categoria creada exitosamente.')
-      window.location.href='#Categorias'
+      // window.location.href='#Categorias'
     }
   })
 }
