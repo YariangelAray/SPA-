@@ -6,17 +6,20 @@ export const router = async (elemento) => {
   let segmentos = (hash.split("/")).filter(seg => seg);  
   console.log(hash, segmentos)
 
-  const vista = recorrerRutas(routes, segmentos);
-  console.log(vista);
+  const [ruta, parametros] = recorrerRutas(routes, segmentos);
+  if(ruta.private){
+    location.hash = "#/Login";
+    return;
+  }
 
-  if (!vista) {
+  if (!ruta) {
     console.warn("Ruta inválida:", hash);    
     elemento.innerHTML = `<h2>Ruta no encontrada</h2>`;
     return;
   }
 
-  await cargarVista(vista.path, elemento);
-  await vista.controlador();
+  await cargarVista(ruta.path, elemento);
+  await ruta.controlador(parametros);
 
 }
 
@@ -24,13 +27,25 @@ const recorrerRutas = (routes, segmentos) => {
 
   let rutaActual = routes;
   let rutaEncontrada = false;
+  let parametros = {};
 
-  if (segmentos[0] == "" && segmentos.length == 1) window.location.href = "#/Home";
+  // if (segmentos[0] == "" && segmentos.length == 1) window.location.href = "#/Home";
+
+  if (segmentos.length == 3){
+    let parametrosSeparados = segmentos[2].split("&");
+
+    parametrosSeparados.forEach((parametro) => {
+      let claveValor = parametro.split("=");
+      console.log(claveValor);
+      
+      parametros[claveValor[0]] = claveValor[1];
+    });
+    
+    console.log(parametros);
+    segmentos.pop();
+  }
 
   segmentos.forEach(segmento => {
-    // segmento = segmento.toLowerCase();
-
-    // if (segmento == "") return;
 
     if (rutaActual[segmento]) {
       rutaActual = rutaActual[segmento];
@@ -45,19 +60,8 @@ const recorrerRutas = (routes, segmentos) => {
       else rutaEncontrada = false;
     } 
 
-    // else {
-    //   console.log("Ruta no encontrada:", segmentos.join("/"));
-    //   return null;
-    // }
-
-    // for (const key in rutaActual) {
-    //   if (typeof rutaActual[key] == 'object') {
-    //     if(!rutaActual.hasOwnProperty(segmento)) rutaActual = rutaActual["/"]
-    //   }
-    // }
-
   });
-  return rutaEncontrada ? rutaActual : null;
+  return rutaEncontrada ? [rutaActual, parametros] : null;
 }
 
 const cargarVista = async (path, elemento) => {

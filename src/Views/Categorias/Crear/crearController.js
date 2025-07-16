@@ -2,7 +2,7 @@ import * as api from "../../../Helpers/api";
 import { manejarErrores } from "../../../Helpers/manejoErrores";
 import * as validacion from "../../../Helpers/validaciones";
 
-export default () => {
+export default (parametros = null) => {
   const form = document.querySelector('#form');
 
   const nombre = document.querySelector('#nombre');

@@ -2,6 +2,7 @@ import homeController from '../Views/Home/homeController.js'
 // categorias
 import categoriaController from '../Views/Categorias/categoriaController.js'
 import categoriaCrearController from '../Views/Categorias/Crear/crearController.js'
+import categoriaEditarController from '../Views/Categorias/Editar/editarController.js'
 // productos
 import productoController from '../Views/Productos/productoController.js'
 
@@ -17,19 +18,23 @@ export const routes = {
     "/":{
       path: `Categorias/index.html`,
       controlador: categoriaController,
-      private: false
+      private: true
     }    ,
     Crear: {    
       path: `Categorias/Crear/index.html`,
       controlador: categoriaCrearController,
-      private: false
+      private: true
     },              
-    Editar: {},
-    Eliminar: {}    
+    Editar: {
+      path: `Categorias/Editar/index.html`,
+      controlador: categoriaEditarController,
+      private: true
+    }  
   },
   Productos:{    
     path: `Productos/index.html`,
-    controlador: productoController
+    controlador: productoController,
+    private: true
   },
   Login: {
     path: `Auth/Login/index.html`,
