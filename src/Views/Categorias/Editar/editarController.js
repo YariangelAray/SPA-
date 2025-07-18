@@ -1,15 +1,13 @@
-import { success } from "../../../Helpers/alertas";
+import { success, confirm } from "../../../Helpers/alertas";
 import * as api from "../../../Helpers/api";
 import { manejarErrores } from "../../../Helpers/manejoErrores";
 import * as validacion from "../../../Helpers/validaciones";
 
 export default async (parametros = null) => {
   const form = document.querySelector('#form');
-  const {id} = parametros;
-  // console.log(parametros);
+  const {id} = parametros;  
 
-  const resultado = await api.get(`categorias/${id}`);
-  // console.log(resultado);
+  const resultado = await api.get(`categorias/${id}`);  
   
   if (!resultado.success) {
     manejarErrores(resultado);
@@ -30,25 +28,21 @@ export default async (parametros = null) => {
   descripcion.addEventListener('blur', validacion.validarCampo);
   descripcion.addEventListener('keydown', (e) => { validacion.validarCampo(e);  validacion.validarLimite(e, 100)});
 
-  // window.addEventListener('beforeunload', (e) => {
-  //   if (nombre.value != "" || descripcion.value != "") {
-  //     e.preventDefault();
-  //     // return "Hay datos que no se han guardado, desea continuar?"
-  //   }
-  // })
-
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (validacion.validarCampos(e)) {
-      const respuesta = await api.put(`categorias/${id}`, validacion.datos)
-      const data = await respuesta.json();
-      if (!respuesta.ok) {
+      const respuesta = await api.put(`categorias/${id}`, validacion.datos)      
+
+      if (!respuesta.success) {
         manejarErrores(respuesta);
         return;
-      }
-      const alerta = await success(data);
+      }      
+      const confirmacion = await confirm("actualizar");
 
-      if(alerta.isConfirmed) window.location.href='#/Categorias'
+      if(confirmacion.isConfirmed) {
+        if((await success(respuesta)).isConfirmed)
+          window.location.href='#/Categorias';
+      }
     }
   })
 }

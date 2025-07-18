@@ -17,10 +17,10 @@ export const error = (data) => {
 });
 }
 
-export const confirm = () => {
+export const confirm = (mensaje) => {
     return Swal.fire({
         title: "Precaución",
-        text: "¿Está seguro de eliminar?",
+        text: `¿Está seguro de ${mensaje}?`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",

@@ -1,10 +1,11 @@
 import * as api from "../../../Helpers/api";
 import { manejarErrores } from "../../../Helpers/manejoErrores";
 import * as validacion from "../../../Helpers/validaciones";
+import { success, confirm } from "../../../Helpers/alertas";
 
 export default (parametros = null) => {
-  const form = document.querySelector('#form');
 
+  const form = document.querySelector('#form');
   const nombre = document.querySelector('#nombre');
   const descripcion = document.querySelector('#descripcion');
 
@@ -13,29 +14,30 @@ export default (parametros = null) => {
   
   descripcion.addEventListener('blur', validacion.validarCampo);
   descripcion.addEventListener('keydown', (e) => { validacion.validarCampo(e);  validacion.validarLimite(e, 100)});
-
-  window.addEventListener('beforeunload', (e) => {
+  
+  document.addEventListener('beforeunload', (e) => {
     if (nombre.value != "" || descripcion.value != "") {
-      e.preventDefault();
-      // return "Hay datos que no se han guardado, desea continuar?"
+      e.preventDefault();      
     }
   })
-
+  
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (validacion.validarCampos(e)) {
-      // const respuesta = await api.post('categorias', validacion.datos)
-
-      // if (!respuesta.ok) {
-      //   manejarErrores(respuesta);
-      //   return;
-      // }
-
-      console.log(validacion.datos);
+      const confirmacion = await confirm("crear la categoria");
       
-
-      alert('Categoria creada exitosamente.')
-      // window.location.href='#Categorias'
+      if(confirmacion.isConfirmed) {
+        const respuesta = await api.post('categorias', validacion.datos)
+    
+        if (!respuesta.success) {
+          manejarErrores(respuesta);
+          return;
+        }
+        else{
+          success(respuesta)
+          window.location.href='#/Categorias';
+        }        
+      }      
     }
   })
 }

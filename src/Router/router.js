@@ -1,74 +1,114 @@
 import { routes } from "./routes";
 
+// Función principal del enrutador SPA
 export const router = async (elemento) => {
-  const hash = location.hash.slice(2);
-  // if (hash.charAt(-1) == "/") hash = 
-  let segmentos = (hash.split("/")).filter(seg => seg);  
-  console.log(hash, segmentos)
+  const hash = location.hash.slice(2); // Eliminamos "#/"
+  const segmentos = hash.split("/").filter(seg => seg); // Extrae y filtra los segmentos del hash
 
-  const [ruta, parametros] = recorrerRutas(routes, segmentos);
-  if(ruta.private){
-    location.hash = "#/Login";
+  // Redirigir a Home si no hay segmentos
+  if (segmentos.length === 0) {
+    redirigirARuta("Home");
     return;
   }
 
-  if (!ruta) {
-    console.warn("Ruta inválida:", hash);    
+  // Buscar la ruta y extraer parámetros
+  const resultadoRuta = encontrarRuta(routes, segmentos);
+  
+  if (!resultadoRuta) {
+    console.warn("Ruta inválida:", hash);
     elemento.innerHTML = `<h2>Ruta no encontrada</h2>`;
     return;
   }
 
+  const [ruta, parametros] = resultadoRuta;
+
+  // Verificar acceso privado
+  if (ruta.private) {
+    redirigirARuta("Login");
+    return;
+  }
+
+  // Cargar la vista HTML y ejecutar el controlador JS
   await cargarVista(ruta.path, elemento);
   await ruta.controlador(parametros);
+};
 
-}
+// Redirecciona a una ruta determinada
+const redirigirARuta = (ruta) => {
+  location.hash = `#/${ruta}`;
+};
 
-const recorrerRutas = (routes, segmentos) => {  
+
+const encontrarRuta = (routes, segmentos) => {  
 
   let rutaActual = routes;
   let rutaEncontrada = false;
-  let parametros = {};
+  let parametros = {};  
 
-  // if (segmentos[0] == "" && segmentos.length == 1) window.location.href = "#/Home";
-
-  if (segmentos.length == 3){
-    let parametrosSeparados = segmentos[2].split("&");
-
-    parametrosSeparados.forEach((parametro) => {
-      let claveValor = parametro.split("=");
-      console.log(claveValor);
-      
-      parametros[claveValor[0]] = claveValor[1];
-    });
-    
-    console.log(parametros);
-    segmentos.pop();
+  if (segmentos.length === 3 && segmentos[2].includes("=")) {
+    parametros = extraerParametros(segmentos[2]);
+    segmentos.pop(); // Quitamos el segmento de parámetros para procesar la ruta
   }
 
+  // Recorremos los segmentos del hash para encontrar la ruta correspondiente
   segmentos.forEach(segmento => {
 
+    // Si el segmento existe dentro del objeto de rutas actual, avanzamos al siguiente nivel
     if (rutaActual[segmento]) {
       rutaActual = rutaActual[segmento];
       rutaEncontrada = true;
-    } else rutaEncontrada = false;
+    } else {
+      // Si el segmento no existe, marcamos la ruta como no encontrada
+      rutaEncontrada = false;
+    }
 
-    if (esGrupoRutas(rutaActual)){
-      if (rutaActual["/"] && segmentos.length == 1){
+    // Si la ruta actual es un grupo de rutas (es decir, tiene más subniveles)
+    if (esGrupoRutas(rutaActual)) {
+
+      // Verificamos si existe una ruta por defecto ("/") y si solo hay un segmento
+      // Esto cubre el caso de rutas como "#/Categorias" donde se espera que "/Categorias/" sea válido
+      if (rutaActual["/"] && segmentos.length == 1) {
         rutaActual = rutaActual["/"];
-        rutaEncontrada = true; 
+        rutaEncontrada = true;
+      } else {
+        // Si no cumple con esa condición, entonces la ruta no es válida
+        rutaEncontrada = false;
       }
-      else rutaEncontrada = false;
-    } 
+    }
 
   });
+
+  // Retornamos la ruta encontrada junto a sus parámetros, o null si no se halló una ruta válida
   return rutaEncontrada ? [rutaActual, parametros] : null;
+
 }
 
+// Extrae un objeto clave-valor desde un string de parámetros tipo "id=1&modo=editar"
+const extraerParametros = (parametros) => {
+  const pares = parametros.split("&");
+  const params = {};
+  pares.forEach(par => {
+    const [clave, valor] = par.split("=");
+    params[clave] = valor;
+  });
+  return params;
+};
+
+// Carga una vista HTML externa dentro de un elemento
 const cargarVista = async (path, elemento) => {
-  const section = await fetch(`./src/Views/${path}`);
-  elemento.innerHTML = await section.text();
-}
+  try {
+    const response = await fetch(`./src/Views/${path}`);
+    if (!response.ok) throw new Error("Vista no encontrada");
 
+    const contenido = await response.text();
+    elemento.innerHTML = contenido;
+  } catch (error) {
+    console.error(error);
+    elemento.innerHTML = `<h2>Error al cargar la vista</h2>`;
+  }
+};
+
+// Verifica si un objeto representa un grupo de rutas (todas sus claves son objetos)
 const esGrupoRutas = (obj) => {
   for (let key in obj) {    
     if (typeof obj[key] !== 'object' || obj[key] === null) {

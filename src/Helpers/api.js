@@ -2,37 +2,41 @@ const url = 'http://localhost:3000/api/';
 
 export const get = async (endpoint) => {
   const respuesta = await fetch(url + endpoint);
-  const datos = await respuesta.json();
-  if (!respuesta.ok) console.warn(datos.message);
-
+  const datos = await respuesta.json();  
   return datos;
 }
 
 export const post = async (endpoint, objeto) => {
-  return await fetch(url + endpoint, {
+  const respuesta = await fetch(url + endpoint, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(objeto)
   });
+  const datos = await respuesta.json();  
+  return datos;
 }
 
 export const put = async (endpoint, objeto) => {
-  return await fetch(url + endpoint, {
+  const respuesta = await fetch(url + endpoint, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(objeto)
   });
+  const datos = await respuesta.json();
+  return datos;
 }
 
 export const del = async (endpoint) => {
-  return await fetch(url + endpoint, {
+  const respuesta = await fetch(url + endpoint, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
     }
   });
+  const datos = await respuesta.json();
+  return datos;
 }
