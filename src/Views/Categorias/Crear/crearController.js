@@ -36,8 +36,8 @@ export default (parametros = null) => {
         else{
           success(respuesta)
           window.location.href='#/Categorias';
-        }        
-      }      
+        }
+      }
     }
   })
 }

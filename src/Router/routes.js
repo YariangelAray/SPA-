@@ -17,19 +17,19 @@ export const routes = {
       path: `Categorias/index.html`,
       controlador: categoria.categoriaController,
       private: true
-    }    ,
+    },
     Crear: {    
       path: `Categorias/Crear/index.html`,
       controlador: categoria.crearController,
       private: true
-    },              
+    },
     Editar: {
       path: `Categorias/Editar/index.html`,
       controlador: categoria.editarController,
       private: true
-    }  
+    }
   },
-  Productos:{    
+  Productos:{
     path: `Productos/index.html`,
     controlador: producto.productoController,
     private: true
