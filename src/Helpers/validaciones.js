@@ -35,14 +35,14 @@ export const validarNumero = (event) => {
 
 // Validación para la contraseña
 export const validarContrasena = (contrasena) => {
-  let regexContra = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*\W).{8,}$/; // Expresión regular para validar la contraseña
+  let regexContra = /^(?=.*[a-z])(?=.*\d)(?=.*\W).{8,}$/; // Expresión regular para validar la contraseña
 
   // Validamos si la contraseña es válida
   if (contrasena.value.trim() != "" && !regexContra.test(contrasena.value)) {
     let error = "";
 
-    if (!/[A-Z]/.test(contrasena.value)) // Validamos si la contraseña contiene al menos una mayúscula
-      error = "Una mayúscula.";
+    // if (!/[A-Z]/.test(contrasena.value)) // Validamos si la contraseña contiene al menos una mayúscula
+    //   error = "Una mayúscula.";
 
     if (!/[a-z]/.test(contrasena.value)) // Validamos si la contraseña contiene al menos una minúscula
       error = "Una minúscula.";
@@ -128,12 +128,12 @@ export const validarCampos = (event) => {
 
   // Validación para la contraseña
   // Obtenemos el campo de la contraseña
-  const contrasena = campos.find((campo) => campo.name == 'contrasena');
+  const contrasena = campos.find((campo) => campo.name == 'password');
   if (contrasena && !validarContrasena(contrasena)) valido = false; // Si la contraseña es inválida, el formulario no es válido
 
   // Validación para el correo electrónico
   // Obtenemos el campo del correo electrónico
-  const correo = campos.find((campo) => campo.name == 'correo');
+  const correo = campos.find((campo) => campo.name == 'email');
   if (correo && !validarCorreo(correo)) valido = false; // Si el correo es inválido, el formulario no es válido
 
   return valido; // Retornamos si el formulario es válido o no

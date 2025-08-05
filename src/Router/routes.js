@@ -4,6 +4,9 @@ import * as categoria from '../Views/Categorias/index.js'
 // productos
 import * as producto from '../Views/Productos/index.js'
 
+import { loginController } from '../Views/Auth/Login/loginController.js'
+import { SignupController } from '../Views/Auth/Signup/SignupController.js'
+
 export const routes = {
   // Ruta simple
   Home:{    
@@ -36,12 +39,12 @@ export const routes = {
   },
   Login: {
     path: `Auth/Login/index.html`,
-    controlador: () => {},
+    controlador: loginController,
     private: false
   },
   Signup: {
     path: `Auth/Signup/index.html`,
-    controlador: () => {},
+    controlador: SignupController,
     private: false
   },
 }

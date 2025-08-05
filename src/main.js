@@ -37,7 +37,6 @@ const main = document.querySelector('#app');
 // }
 
 
-
 window.addEventListener('hashchange', async (e) => {
   router(main);
 })
@@ -45,3 +44,5 @@ window.addEventListener('hashchange', async (e) => {
 window.addEventListener('DOMContentLoaded', async () => {
   router(main);
 })
+
+window.addEventListener('evento', () =>{alert("Estoy tin")})
