@@ -19,28 +19,32 @@ export const routes = {
     "/":{
       path: `Categorias/index.html`,
       controlador: categoria.categoriaController,
-      private: true
+      private: true,
+      can: 'categoria.index'
     },
     Crear: {    
       path: `Categorias/Crear/index.html`,
       controlador: categoria.crearController,
-      private: true
+      private: true,
+      can: 'categorias.crear'
     },
     Editar: {
       path: `Categorias/Editar/index.html`,
       controlador: categoria.editarController,
-      private: true
+      private: true,
+      can: 'categorias.editar'
     }
   },
   Productos:{
     path: `Productos/index.html`,
     controlador: producto.productoController,
-    private: true
+    private: true,
+    can: 'productos.index'
   },
   Login: {
     path: `Auth/Login/index.html`,
     controlador: loginController,
-    private: false
+    private: false,
   },
   Signup: {
     path: `Auth/Signup/index.html`,

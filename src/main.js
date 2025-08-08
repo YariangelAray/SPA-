@@ -1,40 +1,14 @@
 import './style.css';
 import { router } from './Router/router.js';
+import componenteHeader from '../src/componentes/header/index.html?raw';
+import {componenteHeader as header } from './componentes/header/header.js';
 
-// const vistas = [
-//   {
-//     nombre: "Home",
-//     path: "./src/Views/Home/index.html",
-//     controlador: homeController,
-//   },
-//   {
-//     nombre: "Categorias",
-//     path: `./src/Views/Categorias/index.html`,
-//     controlador: categoriaController
-//   },
-//   {
-//     nombre: "Productos",
-//     path: `./src/Views/Productos/index.html`,
-//     controlador: productoController
-//   },
-//   {
-//     nombre: "NuevaCategoria",
-//     path: `./src/Views/Categorias/formulario.html`,
-//     controlador: formularioController
-    
-//   }
-// ]
+document.querySelector('body').insertAdjacentHTML("afterbegin", componenteHeader);
 
 const main = document.querySelector('#app');
 
-// const enrutador = async (hash) => {
-//   const vista = vistas.find((vista) => vista.nombre === hash);
-//   console.log(vista);
 
-//   const section = await fetch(vista.path);
-//   main.innerHTML = await section.text();
-//   vista.controlador();
-// }
+header();
 
 
 window.addEventListener('hashchange', async (e) => {
@@ -45,4 +19,4 @@ window.addEventListener('DOMContentLoaded', async () => {
   router(main);
 })
 
-window.addEventListener('evento', () =>{alert("Estoy tin")})
+   

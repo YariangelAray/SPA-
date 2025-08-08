@@ -23,11 +23,15 @@ export const router = async (elemento) => {
   const [ruta, parametros] = resultadoRuta;
 
   // Verificar acceso privado
-  if (ruta.private) {
+  if (ruta.private && !localStorage.getItem('token')) {
     redirigirARuta("Login");
     return;
+  }else if(!puede(ruta) && ruta.private){
+    window.history.back()
+    alert("Usted no puede ingresar porque no puede")
+    return;
   }
-
+ 
   // Cargar la vista HTML y ejecutar el controlador JS
   await cargarVista(ruta.path, elemento);
   await ruta.controlador(parametros);
@@ -116,4 +120,10 @@ const esGrupoRutas = (obj) => {
     }    
   }
   return true;
+}
+
+const puede = (ruta) => {
+  const permisos = JSON.parse(localStorage.getItem('permisos'));
+  const existe = permisos.some( ({nombre}) => nombre == ruta.can );
+  return existe
 }
